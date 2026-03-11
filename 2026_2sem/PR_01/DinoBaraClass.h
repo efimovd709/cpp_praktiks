@@ -3,51 +3,39 @@
 #include <windows.h>
 #include <stdio.h>
 
+// Вариант 8
+// Выполнил: Ефимов Данила
+// Группа: БИСО-02-25
 using namespace std;
 
-//Структура для организации линейного списка
 struct node {
-    int data; // данные (целое число)
-    node* next; // указатель на следующее значение
+    int data;
+    node* next;
 };
 
-//Формат компонентных данных класса должен обеспечить возможность 
-//создания объекта произвольного размера 
-// (т.е. моделировать динамический массив). 
-
-// класс динамического массива
 class DinoBaraClass
 {
 private:
-    // Компонентные данные класса 
-    // должны быть размещены в закрытой части класса.
-    node* head; // указатель на первый элемент
-    int count;  // счетчик - количество элементов
+    node* head;
+    int count;
 public:
-    // Класс должен содержать конструктор по умолчанию, 
     DinoBaraClass() {
-        head=nullptr;
-        count=0;
+        head = nullptr;
+        count = 0;
     };
-    // конструктор с параметром (параметр конструктора 
-    // – количество элементов компонентного массива), 
     DinoBaraClass(int _size) {
         head = nullptr;
         count = 0;
         for (int i = 0; i < _size; i++)
             addElementFront(genNum());
-     };
-    // конструктор копирования. 
-    DinoBaraClass(DinoBaraClass &_other)
+    };
+    DinoBaraClass(DinoBaraClass& _other)
     {
         head = nullptr;
         count = 0;
         for (int i = 0; i < _other.count; i++)
             addElementRear(_other.getElement(i));
-            //addElementFront(genNum());
     }
-    // Кроме того в состав компонентных функций 
-    // класса должен входить деструктор.
     ~DinoBaraClass() {
         node* current = head;
         node* prev = nullptr;
@@ -57,32 +45,16 @@ public:
             delete prev;
         }
     };
-    /// <summary>
-    /// Информация об авторе
-    /// </summary>
     void author() {
         cout << endl << "Русаков А.М.";
     }
-    /// <summary>
-    /// Генерация целых чисел
-    /// </summary>
-    /// <returns>Целое число -100..100</returns>
     int genNum() {
-        // генерация целых чисел 
-        // https://learn.microsoft.com/ru-ru/cpp/c-runtime-library/reference/rand
-        // fail числа одинаковые ;(
-        //srand(time(NULL)); // !!! не помогло
         int rangeMin = -101;
         int rangeMax = 101;
         double r = rand();
-        //int num = rand() % (end - start + 1) + start;  // формула  0..100
-        int num = ((double) r / RAND_MAX) * (rangeMax - rangeMin) + rangeMin;
-        return num;  // -100..100
+        int num = ((double)r / RAND_MAX) * (rangeMax - rangeMin) + rangeMin;
+        return num;
     };
-    /// <summary>
-    /// Функция добавления элемента (в начало списка)
-    /// </summary>
-    /// <param name="data">значение (целое числое)</param>
     void addElementFront(int data)
     {
         if (count == 0) {
@@ -105,27 +77,21 @@ public:
             head->next = nullptr;
         }
         else {
-        node* current = head;
-        node* prev = nullptr;
-        while (current) {
-            prev = current;
-            current = current->next;
-        }
-        node* tmpNode = new node; // создаю временный узел
-        tmpNode->next = nullptr;
-        tmpNode->data = _data;
-        prev->next = tmpNode;
+            node* current = head;
+            node* prev = nullptr;
+            while (current) {
+                prev = current;
+                current = current->next;
+            }
+            node* tmpNode = new node;
+            tmpNode->next = nullptr;
+            tmpNode->data = _data;
+            prev->next = tmpNode;
         }
         count++;
     }
-
-    /// <summary>
-    /// Вставить элемент в дин. массив
-    /// </summary>
-    /// <param name="pos">позиция</param>
-    /// <param name="data">значение</param>
     void insertElement(int pos, int data) {
-        if (count > 0) // if (head)
+        if (count > 0)
             if ((pos >= 0) and (pos <= count))
             {
                 if (pos == 0) {
@@ -135,7 +101,7 @@ public:
                     int ind = 0;
                     node* current = head;
                     node* prev = nullptr;
-                    while(current) {
+                    while (current) {
                         if (ind == pos) {
                             node* tmpPoint = new node;
                             tmpPoint->next = current;
@@ -152,16 +118,13 @@ public:
                 if (pos == count) {
                     addElementRear(data);
                 }
-                
             }
-
     }
     void setElement(int pos, int data) {
         if (count > 0)
             if ((pos >= 0) and (pos < count))
             {
                 node* current = head;
-                //cout << endl << "__Element:  ";
                 int ind = 0;
                 while (current) {
                     if (ind == pos)
@@ -171,20 +134,18 @@ public:
                 }
             }
     }
-    int getElement(int _pos)                        
+    int getElement(int _pos)
     {
-        int element = -1;                        
-        if (count>0)                        
-            if ((_pos >= 0) and (_pos < count))                        
-            {                        
+        int element = -1;
+        if (count > 0)
+            if ((_pos >= 0) and (_pos < count))
+            {
                 node* current = head;
-                //cout << endl << "__Element:  ";
                 int ind = 0;
                 while (current) {
-                    if (ind==_pos)
+                    if (ind == _pos)
                     {
                         element = current->data;
-                        //cout << element;
                         break;
                     }
                     current = current->next;
@@ -200,7 +161,7 @@ public:
                 int ind = 0;
                 node* current = head;
                 node* prev = nullptr;
-                if (count>1)
+                if (count > 1)
                     while (current) {
                         if (ind == _pos) {
                             node* tmpPoint = current;
@@ -208,7 +169,7 @@ public:
                             delete tmpPoint;
                             break;
                         }
-                        prev  = current;
+                        prev = current;
                         current = current->next;
                         ind++;
                     }
@@ -219,7 +180,6 @@ public:
                 count--;
             }
     }
-    // компонентную функцию для вывода на экран содержимого объекта;
     void display() {
         node* current = head;
         cout << endl << "__Display";
@@ -231,9 +191,8 @@ public:
     int getSize() {
         return count;
     }
-    bool operator=(const DinoBaraClass& _other) 
+    bool operator=(const DinoBaraClass& _other)
     {
-        // очистка текущего массива ( this->)
         node* current = this->head;
         node* prev = nullptr;
         while (current) {
@@ -242,361 +201,68 @@ public:
             delete prev;
         }
         this->count = 0;
-        // копирование элементов
         current = _other.head;
         while (current) {
             this->addElementRear(current->data);
             current = current->next;
         }
-        return true; //return head == other.head && count == other.count;
-    } 
-    // 25  11
-    //DinoBaraClass operator^(int _stepen) {
-    //    cout << endl<< endl<<"NIKA i NINA i LENA (belosnezhka tozhe) ne s'eli KAPI";
-    //    cout << endl<< endl<<"MegaNatasha Rulez ALPHACH SIGmA";
-    //    cout << endl<< endl<<"MegaMasha love SVT forever";
-
-    //    node* current = this->head;
-    //    int index = 0;
-    //    while (current) {
-    //        if (index % 2 == 1) // нечетный элемент
-    //        {
-    //            int tmp = current->data;
-    //            current->data = pow(tmp, _stepen);
-    //        }
-    //        current = current->next;
-    //        index++;
-    //    }
-    //    return *this;
-    //}
-    // 24 вариант 
-    //bool operator<(const DinoBaraClass& _other)
-    //{
-    //    node *curent  = this->head;
-    //    int _count = 0;
-    //    int sum = 0;
-    //    //d91 = -61, 12, -100
-    //    while (curent) {
-    //        _count++;
-    //        sum += curent->data;
-    //        curent = curent->next;
-    //    }
-    //    float _average1 = sum / _count;
-
-    //    curent = _other.head;
-    //    _count = 0;
-    //    sum = 0;
-    //    //d91 = -61, 12, -100
-    //    while (curent) {
-    //        _count++;
-    //        sum += curent->data;
-    //        curent = curent->next;
-    //    }
-    //    float _average2 = sum / _count;
-    //    if (_average1 < _average2)
-    //        return true;
-    //    else
-    //        return false;
-    //}
-
-    // 18 вариант
-    // Поэлементное деление элементов 
-    // компонентных массивов c четными номерами
-    //DinoBaraClass operator/( DinoBaraClass& _other) {
-    //    cout << endl <<"MegaKate Alpha SIGAMA";
-    //    node* current = this->head;
-    //    int index = 0;
-    //    while (current) {
-    //        if (index % 2 == 0)  // четные
-    //        {
-    //            int tmp = _other.getElement(index);
-    //            current->data = current->data / tmp;
-    //        }
-    //        current = current->next;
-    //        index++;
-    //    }
-    //    return *this;
-    //}
-    // 23
-    // Сортировка элементов компонентного массива по убыванию
-    //void sortDesc() {
-    //    int n = getSize();
-    //    for (int i = 0; i < n - 1; i++) {
-    //        for (int j = 0; j < n - i - 1; j++) {
-    //            //    v[j] = v[j + 1]
-    //            //    v[j + 1] = tmp;
-    //            if (getElement(j)< getElement(j+1)){  //if (v[j] > v[j + 1])
-    //                int tmp = getElement(j); //    int tmp = v[j];
-    //                setElement(j, getElement(j + 1));//    v[j] = v[j + 1]
-    //                setElement(j+1, tmp);//    v[j + 1] = tmp;
-    //                }
-    //        }
-    //    }
-    //}
-    //void sortAsc() {
-    //    int n = getSize();
-    //    for (int i = 0; i < n - 1; i++) {
-    //        for (int j = 0; j < n - i - 1; j++) {
-    //            //    v[j] = v[j + 1]
-    //            //    v[j + 1] = tmp;
-    //            if (getElement(j) > getElement(j + 1)) {  //if (v[j] > v[j + 1])
-    //                int tmp = getElement(j); //    int tmp = v[j];
-    //                setElement(j, getElement(j + 1));//    v[j] = v[j + 1]
-    //                setElement(j + 1, tmp);//    v[j + 1] = tmp;
-    //            }
-    //        }
-    //    }
-    //}
-    // 3 
-    // Поэлементное про-изведение элементов компонентных 
-    // массивов с нечетными номерами
-    //DinoBaraClass operator*(DinoBaraClass& _other) {
-    //    node* current = this->head;
-    //    int index = 0;
-    //    while (current) {
-    //        int tmp = _other.getElement(index);
-    //        current->data = current->data * tmp;
-    //        current = current->next;
-    //        index++;
-    //    }
-    //    return *this;
-    //}
-    // 16
-    // Изменение знака минимального элемента 
-    // компонентного массива на противоположный
-    //DinoBaraClass operator!() {
-    //    if (count>1){
-    //        cout << endl << "MegaAngelina Sigma!!!" << endl;
-    //        int min = this->head->data;
-    //        node* current = this->head;
-    //        while (current) {
-    //            if (current->data < min)
-    //                min = current->data;
-    //            current = current->next;
-    //        }
-    //        cout << "Minimalniy element = " << min;
-    //        current = this->head;
-    //        while (current) {
-    //            if (current->data == min)
-    //                current->data=(-1)* current->data;
-    //            current = current->next;
-    //        }
-    //    }
-    //        return *this;
-    //}
-    // 2
-    // Произведение положительных 
-    // элементов компонентного массива
-    //float operator*() {
-    //    float _multiplication = 1;
-    //    if (count > 1) {
-    //        cout << endl << "MegaPolina THe BEST!!!" << endl;
-    //        node* current = this->head;
-    //        while (current) {
-    //            if (current->data > 0)
-    //                _multiplication *= current->data;
-    //            current = current->next;
-    //        }
-    //    }
-    //    return _multiplication;
-    //}
-    // 5
-    // Изменение знака элементов компонентного 
-    // массива на противоположный
-    //DinoBaraClass operator*() {
-    //    node* current = this->head;
-    //    while (current) {
-    //        current->data = current->data * (-1);
-    //        current = current->next;
-    //    }
-    //    return *this;
-    //}
-    //10
-    // Поэлементное вычитание элементов 
-    // компонентных массивов с нечетными номерами
-    //DinoBaraClass operator-(int _deductible) {
-    //    cout << endl << endl << "MegaNastya THE BEST!";
-    //    node* current = this->head;
-    //    int index = 0;
-    //    while (current) {
-    //        if (index % 2 == 1) // нечетный элемент
-    //            current->data = current->data - _deductible;
-    //        current = current->next;
-    //        index++;
-    //    }
-    //    return *this;
-    //}
-    //20
-    // Изменение знака элементов 
-    // компонентного массива с нечетными 
-    // номерами на противоположный
-    //DinoBaraClass operator!() {
-    //    cout << endl << endl << "MegaSashen'ka mili!";
-    //    node* current = head;
-    //    int index = 0;
-    //    while (current) {
-    //        if (index % 2 == 1) // нечетный элемент
-    //            current->data = current->data *(-1);
-    //        current = current->next;
-    //        index++;
-    //    }
-    //    return *this;
-    //}
-    // 9
-    //DinoBaraClass operator++(int num) {
-    //    cout << "megaAlisa Alpha the BEST";
-    //    node* curent = head;
-    //    int index = 0;
-    //    while (curent) {
-    //        if (index % 2 == 1)
-    //            curent->data = curent->data + 1;
-    //        curent = curent->next;
-    //        index++;
-    //    }
-    //    return *this;
-    //}
-    // 13
-    // Изменение знака элементов компонентного 
-    // массива с нечетными номерами на противоположный
-    //DinoBaraClass operator!() {
-    //    cout << "megaVarvara topchik i mili$)";
-    //    node* curent = head;
-    //    int index = 0;
-    //    while (curent) {
-    //        if (index % 2 == 1)
-    //            curent->data = curent->data *(- 1);
-    //        curent = curent->next;
-    //        index++;
-    //    }
-    //    return *this;
-    //}
-    // 5
-    // Изменение знака элементов компонентного 
-    // массива на противоположный
-    //DinoBaraClass operator-() {
-    //    cout << "Yarik samec!";
-    //    node* curent = head;
-    //    while (curent) {
-    //            curent->data = curent->data * (-1);
-    //            curent = curent->next;
-    //    }
-    //    return *this;
-    //}
-    // 22
-    // Возведение в степень элементов компонентного массива с нечетными 
-    // номерами. Показатель степени – правый операнд
-    //DinoBaraClass  operator^( int _power) {
-    //    cout << endl << "MegaKate svetilo nauk! sigma x" << _power;
-    //    cout << " MegaGanira alphach!!!";
-    //    node* current = head;
-    //    int index = 0;
-    //    while (current) {
-    //        if (index % 2 == 1) {
-    //            current->data = pow(current->data, _power);
-    //        }
-    //        current=current->next;
-    //        index++;
-    //    }
-    //    return *this;
-    //}
-    // 5 вариант
-    DinoBaraClass operator-() {
-        cout << "Kira  =  Egeyskoe more + honda moto + 5 detey ot Dani P";
-        node* curent = this->head;
-        while (curent) {
-                curent->data = curent->data * (-1);
-                curent = curent->next;
+        return true;
+    }
+    DinoBaraClass operator/(DinoBaraClass& _other) {
+        cout << endl << "Компонентная операция: поэлементное деление четных элементов";
+        node* current = this->head;
+        int index = 0;
+        while (current) {
+            if (index % 2 == 0) {
+                int tmp = _other.getElement(index);
+                if (tmp != 0) {
+                    current->data = current->data / tmp;
+                }
+                else {
+                    cout << endl << "Ошибка: деление на ноль в позиции " << index;
+                }
+            }
+            current = current->next;
+            index++;
         }
         return *this;
     }
-
-
-
-    //16
-    //friend void operator/(DinoBaraClass& _other, int num);
-    //2
-    //friend void operator~(DinoBaraClass& _other);
-    //9 -
-    // Поэлементное вычитание числа из компонентного массива
-    //friend void operator-(DinoBaraClass& _other, int num);
-    //13 
-    //friend void operator*(DinoBaraClass& _other, int num);
-    //22 
-    //friend DinoBaraClass operator*(DinoBaraClass& _other1, DinoBaraClass& _other2);
-    //5
-    friend bool operator<(DinoBaraClass& _other1, DinoBaraClass& _other2);
-
+    friend bool operator>(DinoBaraClass& _other1, DinoBaraClass& _other2);
+    friend void operator~(DinoBaraClass& _other);
 };
 
-
-//16
-// Целочисленное деление отрицательных 
-// элементов компонентного массива на число
- //void operator/(DinoBaraClass& _other, int num) {
- //    node* current = _other.head;
- //    while (current) {
- //        current->data /= num;
- //        current = current->next;
- //    }
- //};
- // 2
- // Изменение порядка следования элементов 
- // компонентного массива на противоположный     
- //void operator~(DinoBaraClass& _other) {
- //    for (int i = 0; i < _other.count / 2; i++) {
- //        int tmp = _other.getElement(i);
- //        _other.setElement(i, _other.getElement(_other.count - i - 1));
- //        _other.setElement(_other.count - i - 1, tmp);
- //    }
- //};
- //9 -
-// Поэлементное вычитание числа из компонентного массива
- //void operator-(DinoBaraClass& _other, int num) {
- //    node* current = _other.head;
- //    while (current) {
- //        current->data -= num;
- //        current = current->next;
- //    }
- //};
- //13 *
-// Поэлементное умножение компонентного массива на число
- //void operator*(DinoBaraClass& _other, int num) {
- //    node* current = _other.head;
- //    while (current) {
- //        current->data *= num;
- //        current = current->next;
- //    }
- //};
- //
-//22
- //DinoBaraClass operator*(DinoBaraClass& _other1, DinoBaraClass& _other2) {
- //    cout << endl << " megaKsenya = Maymi bich + 5 detey ot Seregi";
- //        node* current = _other1.head;
- //        int index = 0;
- //        while (current) {
- //            current->data *= _other2.getElement(index);
- //            current = current->next;
- //            index++;
- //        }
- //        return  _other1;
- //}
-
-// 5
-bool operator<(DinoBaraClass& _other1, DinoBaraClass& _other2) {
-    int sum1=0;
+bool operator>(DinoBaraClass& _other1, DinoBaraClass& _other2) {
+    int max1 = -2147483648;
     node* current = _other1.head;
     while (current) {
-        sum1 = current->data;
+        if (current->data > max1) {
+            max1 = current->data;
+        }
         current = current->next;
     }
-    int sum2=0;
+    int max2 = -2147483648;
     current = _other2.head;
     while (current) {
-        sum2 = current->data;
+        if (current->data > max2) {
+            max2 = current->data;
+        }
         current = current->next;
     }
-    if (sum1 < sum2)
-        return true;
-    else
-        return false;
-};
+    cout << endl << "Дружественная операция: сравнение по максимуму";
+    cout << endl << "Max1 = " << max1 << ", Max2 = " << max2;
+    return max1 > max2;
+}
+
+void operator~(DinoBaraClass& _other) {
+    cout << endl << "Глобальная операция: сортировка по убыванию";
+    int n = _other.getSize();
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (_other.getElement(j) < _other.getElement(j + 1)) {
+                int tmp = _other.getElement(j);
+                _other.setElement(j, _other.getElement(j + 1));
+                _other.setElement(j + 1, tmp);
+            }
+        }
+    }
+}
