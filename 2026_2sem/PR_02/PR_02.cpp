@@ -1,6 +1,5 @@
-﻿#include <iostream>
+#include <iostream>
 #include <windows.h>
-#include <stdio.h>
 #include "DinoBaraVirtClass.h"
 
 using namespace std;
@@ -10,47 +9,57 @@ int main()
     setlocale(LC_ALL, "Russian");
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
+    
     cout << "Практическая работа 2" << endl;
-    DinoBaraVirtClass d1(10);
-    d1.display();
-    // проверка конструктора копирования 
-    DinoBaraVirtClass d2=d1;
-    DinoBaraVirtClass d3;
-    // проверка переопределения оператора присваивания
-    d3 = d1;
-    d2.display();
-    d3.display();
-
-    A a1;
+    cout << "Вариант 8" << endl;
+    
+    DinoBaraVirtClass* ptr1;
+    DinoBaraVirtClass* ptr2;
+    DinoBaraVirtClass* ptr3;
+    
+    // Конструктор с параметром
+    cout << "\n=== Создание A с параметром ===";
+    A a1(10);
+    a1.Author();
     a1.display();
     a1.calculate();
-
-    // Для второго варианта
-    //A a1;
-    //a1.display();
-    //cout << endl << "Введите r: ";
-    //int r=0;
-    //cin >> r;
-    //a1.calculate(r);
-
-    // Для 14 варианта
-    //A a1;
-    //a1.display();
-    //cout << endl << "Введите A: ";
-    //int A=0;
-    //cin >> A;
-    //cout << endl << "Введите B: ";
-    //int b = 0;
-    //cin >> b;
-    //a1.calculate(A, b);
-
+    
+    // Конструктор по умолчанию
+    cout << "\n=== Создание B по умолчанию ===";
     B b1;
     b1.display();
     b1.calculate();
     b1.display();
-
-    C c1;
+    
+    // Конструктор копирования
+    cout << "\n=== Создание C копированием ===";
+    C c1(8);
     c1.display();
-    c1.calculate();
+    C c2 = c1;
+    c2.display();
+    
+    // Демонстрация приведения вверх (указатели на базовый класс)
+    cout << "\n=== Демонстрация полиморфизма ===";
+    
+    ptr1 = &a1;
+    ptr1->calculate();
+    
+    ptr2 = &b1;
+    ptr2->calculate();
+    
+    ptr3 = &c1;
+    // Для класса C нужно передать R
+    cout << endl << "Введите R: ";
+    int r;
+    cin >> r;
+    c1.calculate(r);
     c1.display();
+    
+    // Демонстрация оператора присваивания
+    cout << "\n=== Демонстрация оператора присваивания ===";
+    A a2;
+    a2 = a1;
+    a2.display();
+    
+    return 0;
 }
