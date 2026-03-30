@@ -2,6 +2,7 @@
 #include <iostream>
 #include <windows.h>
 #include <stdio.h>
+#include <ctime>
 
 using namespace std;
 
@@ -13,24 +14,21 @@ protected:
 public:
 	DinoBaraVirtClass() {
 		size = 17;
-		data = new int[size+1];
+		data = new int[size];
 		srand(time(nullptr));
-		for (int i = 0; i <= size; i++) {
+		for (int i = 0; i < size; i++) {
 			data[i] = rand() % 201 - 100;
 		}
 	};
 	DinoBaraVirtClass(int _size) {
-		if (_size>0) {
-			data = new int[_size+1];
+		if (_size > 0) {
+			size = _size;
+			data = new int[size];
 			srand(time(nullptr));
-			for (int i = 0; i <= _size; i++) {
+			for (int i = 0; i < size; i++) {
 				data[i] = rand() % 201 - 100;
 			}
-			size = _size;
 		}
-		//else {
-		//	printf("ERROR\n");
-		//}
 	};
 	~DinoBaraVirtClass() {
 		delete[] data;
@@ -38,238 +36,122 @@ public:
 	void display() {
 		cout << endl << "Display: ";
 		for (int i = 0; i < size; i++) {
-			cout<< " " << data[i];
+			cout << " " << data[i];
 		}
 		cout << endl;
 	}
 	void Author() {
-		cout << "\nРусаков Алексей Михайлович, БИСО-01-25, Вариант 8\n" ;
+		cout << "\nЕфимов Данила Владимирович, БИСО-02-25, Вариант 8\n";
 	}
 	DinoBaraVirtClass(const DinoBaraVirtClass& other) {
-		cout << "DinoBaraVirtClass(const DinoBaraVirtClass & other) "<< endl;
+		cout << "DinoBaraVirtClass(const DinoBaraVirtClass & other) " << endl;
 		size = other.size;
-		data = new int[size+1];
-		for (int i = 0; i <= size; i++) {
+		data = new int[size];
+		for (int i = 0; i < size; i++) {
 			data[i] = other.data[i];
 		}
-		printf("\n");
 	}
 	DinoBaraVirtClass& operator=(const DinoBaraVirtClass& other) {
 		cout << "operator= " << endl;
 		if (this != &other) {
 			delete[] data;
 			size = other.size;
-			data = new int[size+1];
-			for (int i = 0; i <= size; i++) {
+			data = new int[size];
+			for (int i = 0; i < size; i++) {
 				data[i] = other.data[i];
 			}
 		}
 		return *this;
 	}
-	virtual void calculate() {  };
-	//virtual void calculate(int r) {  };
-	//virtual void calculate(int A, int B) {};
-
+	virtual void calculate() = 0;
+	virtual void calculate(int r) {};
 };
 
-class A: public DinoBaraVirtClass
+class A : public DinoBaraVirtClass
 {
 public:
-	//void calculate() override {
-	//	cout << endl << "  Variant 18";
-	//	// номер и значение минимального по модулю элемента массива;
-	//	int min = abs(data[0]);
-	//	int index = 0;
-	//	for (int i = 0; i <= size; i++)
-	//		if (abs(data[i]) < min){
-	//			min = abs(data[i]);
-	//			index = i;
-	//		}
-	//	cout << endl << "Index = " << index;
-	//	cout << endl << "Znachenie = " << min;
-	//};
-	//void calculate(int r) override {
-	//	cout << endl << "  Variant 2";
-	//	// количество элементов массива, больших R 
-	//	// (R вводится с клавиатуры и передается в
-	//	// разрабатываемую функцию как параметр);
-	//	int count = 0;
-	//	for (int i = 0; i <= size; i++)
-	//		if (data[i] > r)
-	//			count ++;
-	//	cout << endl << "Kolichestvo: " << count;
-	//};
-	void calculate() override {
-		cout << endl << "  Variant 5";
-		// количество элементов, расположенных между 
-		// максимальным и минимальным элементами;
-		int min = data[0];
-		int max = data[0];
-		int indexMin = 0;
-		int indexMax = 0;
-		for (int i = 0; i <= size; i++){
-			if (data[i] < min){
-				min = data[i];
-				indexMin = i;
-			}
-			if (data[i] > max) {
-				max = data[i];
-				indexMax = i;
-			}
+	A() : DinoBaraVirtClass() {}
+	A(int _size) : DinoBaraVirtClass(_size) {}
+	A(const A& other) : DinoBaraVirtClass(other) {}
+	~A() {}
+	A& operator=(const A& other) {
+		if (this != &other) {
+			DinoBaraVirtClass::operator=(other);
 		}
-		int count = indexMax - indexMin;
-		cout << endl << "indexMax - indexMin = " << count;
-	};
-	//void calculate() override {
-	//	cout << endl << "  Variant 16 and 7";
-	//	// сумму элементов массива с нечетными номерами
-	//	int _sum = 0;
-	//	for (int i = 0; i <= size; i++) 
-	//		if (data[i] % 2 == 1)  //нечетное
-	//			_sum += data[i];
-	//	cout << endl << "Sum = " << _sum;
-	//};
-	//void calculate() override {
-	//	cout << endl << "  Variant 6";
-	//	// значение минимального по модулю элемента массива;
-	//	int min = abs(data[0]);
-	//	for (int i = 0; i <= size; i++)
-	//		if (abs(data[i]) < min){
-	//			min = abs(data[i]);
-	//		}
-	//	cout << endl << "min znachenie = " << min;
-	//};
-	//void calculate() override {
-	//	cout << endl << "  Variant 24";
-	//	// сумму минимального по модулю и максимального 
-	//	// по модулю элементов массива;
-	//	int min = abs(data[0]);
-	//	for (int i = 0; i <= size; i++)
-	//		if (abs(data[i]) < min) {
-	//			min = abs(data[i]);
-	//		}
-	//	int max = abs(data[0]);
-	//	for (int i = 0; i <= size; i++)
-	//		if (abs(data[i]) > max) {
-	//			max = abs(data[i]);
-	//		}
-	//	int _sum = min + max;
-
-	//	cout << endl << "sum = min + max " << _sum;
-	//};
-	//void calculate() override {
-	//	cout << endl << "  Variant 13";
-	//	// максимальный элемент массива;
-	//	int max = data[0];
-	//	for (int i = 0; i <= size; i++)
-	//		if (data[i] > max) 
-	//			max = data[i];
-	//	cout << endl << " Max  = " << max;
-	//};
-	//void calculate() override {
-	//	cout << endl << "  Variant 9";
-	//	// номер максимального элемента массива;;
-	//	int max = data[0];
-	//	int indexMax = 0;
-	//	for (int i = 0; i <= size; i++)
-	//		if (data[i] > max) {
-	//			max = data[i];
-	//			indexMax = i;
-	//		}
-	//	cout << endl << " indexMax  = " << indexMax;
-	//};
-	//void calculate() override {
-	//	cout << endl << "  Variant 1";
-	//	// произведение положительных элементов массива;
-	//	int _multiplication = 1;
-	//	for (int i = 0; i <= size; i++)
-	//		if (data[i] > 0) 
-	//			_multiplication *= data[i];
-	//	cout << endl << " multiplication  = " << _multiplication;
-	//};
-	//void calculate() override {
-	//	cout << endl << "  Variant 21";
-	//	// сумму отрицательных элементов массива;
-	//	int _sum_negative = 0;
-	//	for (int i = 0; i <= size; i++)
-	//		if (data[i] < 0) 
-	//			_sum_negative += data[i];
-	//	cout << endl << " _sum_negative  = " << _sum_negative;
-	//};
-	//void calculate() override {
-	//	cout << endl << "  Variant 3";
-	//	// сумму положительных элементов массива;
-	//	int _sum_positive = 0;
-	//	for (int i = 0; i <= size; i++)
-	//		if (data[i] > 0)
-	//			_sum_positive += data[i];
-	//	cout << endl << " _sum_positive  = " << _sum_positive;
-	//};
-	//void calculate(int A, int B) override {
-	//	cout << endl << "  Variant 14";
-	//	// количество элементов массива, лежащих в интервале 
-	//	// от A до B (значения A и B вводятся с клавиатуры 
-	//	// и передаются в разрабатываемую функцию как параметры);
-	//	int _count = B-A;
-	//	cout << endl << " _count  = " << _count;
-	//};
+		return *this;
+	}
+	void calculate() override {
+		cout << endl << "=== Задание 1: Количество отрицательных элементов ===";
+		int count = 0;
+		for (int i = 0; i < size; i++) {
+			if (data[i] < 0) count++;
+		}
+		cout << endl << "Количество отрицательных элементов: " << count << endl;
+	}
 };
 
 class B : public DinoBaraVirtClass
 {
 public:
-	//Вариант 23
+	B() : DinoBaraVirtClass() {}
+	B(int _size) : DinoBaraVirtClass(_size) {}
+	B(const B& other) : DinoBaraVirtClass(other) {}
+	~B() {}
+	B& operator=(const B& other) {
+		if (this != &other) {
+			DinoBaraVirtClass::operator=(other);
+		}
+		return *this;
+	}
 	void calculate() override {
-		cout << endl << "  Variant 23";
-		// сумму положительных элементов массива, расположенных до минимального элемента;
-		int min = data[0];
-		int index = 0;
-		for (int i = 0; i <= size; i++)
-			if (data[i] < min) {
-				min = abs(data[i]);
-				index = i;
+		cout << endl << "=== Задание 2: Сумма элементов после последнего отрицательного ===";
+		int lastNegativeIndex = -1;
+		for (int i = 0; i < size; i++) {
+			if (data[i] < 0) lastNegativeIndex = i;
+		}
+		int sum = 0;
+		if (lastNegativeIndex != -1) {
+			for (int i = lastNegativeIndex + 1; i < size; i++) {
+				sum += data[i];
 			}
-		cout << endl << "Index = " << index;
-		cout << endl << "Znachenie = " << min;
-		int positeveSum = 0;
-		for (int i = 0; i < index; i++)
-			if (data[i] << min > 0)
-				positeveSum += data[i];
-		cout << endl << "positeveSum = " << positeveSum;
-	};
+		}
+		cout << endl << "Сумма элементов после последнего отрицательного: " << sum << endl;
+	}
 };
 
 class C : public DinoBaraVirtClass
 {
 public:
-	//Вариант 24
-	void calculate() override {
-		cout << endl << "  Variant 24";
-		// преобразовать массив таким образом, чтобы сначала располагались 
-		// все нулевые элементы, потом все положительные, 
-		// а потом – все отрицательные.
-		int countZero=0;
-		int *positiveData = new int[size + 1];
-		int positiveIndex = 0;
-		int *negativeData = new int[size + 1];
-		int negativeIndex = 0;
-		for (int i = 0; i <= size; i++) {
-			if (data[i] == 0)
-				countZero++;
-			if (data[i] > 0) {
-				positiveData[positiveIndex] = data[i];
-				positiveIndex++;
-			}
-			if (data[i] < 0) {
-				negativeData[negativeIndex] = data[i];
-				negativeIndex++;
+	C() : DinoBaraVirtClass() {}
+	C(int _size) : DinoBaraVirtClass(_size) {}
+	C(const C& other) : DinoBaraVirtClass(other) {}
+	~C() {}
+	C& operator=(const C& other) {
+		if (this != &other) {
+			DinoBaraVirtClass::operator=(other);
+		}
+		return *this;
+	}
+	void calculate(int r) override {
+		cout << endl << "=== Задание 3: Преобразование массива (не превышает R <= остальные) ===";
+		cout << endl << "R = " << r;
+		int* temp = new int[size];
+		int index = 0;
+		for (int i = 0; i < size; i++) {
+			if (data[i] <= r) {
+				temp[index++] = data[i];
 			}
 		}
-		for (int i = 0; i < countZero; i++)
-			data[i] = 0;
-		for (int i = 0; i < positiveIndex; i++)
-			data[countZero+ i] = positiveData[i];
-		for (int i = 0; i < negativeIndex; i++)
-			data[countZero + positiveIndex +i] = negativeData[i];
-	};
+		for (int i = 0; i < size; i++) {
+			if (data[i] > r) {
+				temp[index++] = data[i];
+			}
+		}
+		for (int i = 0; i < size; i++) {
+			data[i] = temp[i];
+		}
+		delete[] temp;
+		cout << endl << "Массив преобразован" << endl;
+	}
+	void calculate() override {}
 };
