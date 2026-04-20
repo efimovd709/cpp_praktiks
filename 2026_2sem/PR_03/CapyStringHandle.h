@@ -113,7 +113,8 @@ public:
 		}
 		printf("\n Kolichestvo: %d", count);
 	}
-	// Вариант 3: Выделить из исходной строки самое короткое и самое длинное слова
+	// Вариант 3: Выделить из исходной строки самое короткое 
+	// и самое длинное слова
 	void var3() {
 		printf("\n=== Variant 3 ===\n");
 		if (words.empty()) {
@@ -231,6 +232,149 @@ public:
 					word.c_str(), word[0], word[word.length() - 1]);
 			}
 		}
+	}
+	// 7 Разработать метод, выделяющий из исходной строки слова, 
+	// содержащие не менее N вхождений некоторого символа. 
+	// Количество вхождений N и изображение искомого символа 
+	// вводятся с клавиатуры.
+	int checkCharCount(string word, char ch) {
+		int count = 0;
+		for (int i = 0; i < word.length(); i++) {
+			if (word[i] == ch)
+				count++;
+		}
+		return count;
+	}
+	void var7() {
+		printf("\n=== Variant 7 ===\n");
+		if (words.empty()) {
+			printf("Masiv slov pust!\n");
+			return;
+		}
+		int count = 2;
+		char ch = 'a';
+		vector<string> filteredWords;
+		for (const auto& word : words) {
+			if (checkCharCount(word, ch)== count)
+				filteredWords.push_back(word);
+		}
+		printf("filteredWords: ");
+		for (const auto& word : filteredWords) {
+			printf("%s ", word.c_str());
+		}
+		//	shortestWord.c_str(), shortestWord.length());
+		//printf("Samoe korotkoe slovo: \"%s\" (dlina: %lu simvolov)\n",
+		//	longestWord.c_str(), longestWord.length());
+	}
+
+	// 10 Разработать метод, определяющий в исходной строке 
+	// самое длинное слово и выполняющий его реверс 
+	// (первая буква меняется местами с последней, 
+	// вторая – с предпоследней и т.д.). 
+	// Результат – найденное слово с учетом реверса.
+	void var10() {
+		printf("\n=== Variant 10 ===\n");
+		if (words.empty()) {
+			printf("Masiv slov pust!\n");
+			return;
+		}
+		string longestWord = words[0];
+		for (const auto& word : words) {
+			if (word.length() > longestWord.length()) {
+				longestWord = word;
+			}
+		}
+		printf("Samoe dlinnoe slovo: \"%s\" (dlina: %lu simvolov)\n",
+			longestWord.c_str(), longestWord.length());
+		string reversedStr;
+		for (int i = longestWord.length() - 1; i >= 0; --i) {
+			reversedStr += longestWord[i];
+		}
+		printf("reversedStr: \"%s\" ",
+			reversedStr.c_str());
+	}
+
+	// Вариант 12: Разработать метод, выделяющий из исходной строки слова,
+	// являющиеся положительными шестнадцатеричными константами С++.
+	void var12() {
+		printf("\n=== Variant 12 ===\n");
+		if (words.empty()) {
+			printf("Masiv slov pust!\n");
+			return;
+		}
+		string validChar = "abcdefABCDEF1234567890";
+		vector<string> validWords;
+		int count = 0;
+		for (const auto& word : words) {
+			int startPos = 0;
+			if (word[0] == '+') {
+				startPos = 1;
+			}
+			bool isID = true;
+			for (int i = startPos; i < word.length(); i++) {
+				if (validChar.find(word[i]) == std::string::npos) {
+					isID = false;
+					break;
+				}
+			}
+			if (isID) {
+				validWords.push_back(word);
+				count++;
+			}
+		}
+		printf("Naydennie slova: ");
+		for (const auto& word : validWords) {
+			printf("%s ", word.c_str());
+		}
+		printf("\n Kolichestvo: %d", count);
+	}
+	// 17 Разработать метод, проверяющий имеются ли в исходной строке 
+	// отдельные слова, заключенные в скобки ( ), [ ], { }. 
+	// Результатом являются слова, заклю-ченные в скобки с 
+	// ненарушенным балансом парности. Вложенность скобок 
+	// отсутствует.
+	int checkBrackets(string word, char ld, char rd) {
+		
+		if ((word.find(ld) < std::string::npos) or
+			(word.find(rd) < std::string::npos)) {
+			int numBrackets = 0;
+			for (int i = 0; i < word.length(); i++) {
+				if (word[i] == ld)
+					numBrackets++;
+				if (word[i] == rd)
+					numBrackets--;
+			}
+			//printf("\n ---- %i \n", numBrackets);
+			if (numBrackets == 0)
+				return 1;  // скобки есть и сбалансированны
+			else
+				return -1; // скобки есть и не сбалансированны
+		}
+		else
+			return 0; // скобок нет
+	}
+	void var17() {
+		printf("\n=== Variant 17 ===\n");
+		if (words.empty()) {
+			printf("Masiv slov pust!\n");
+			return;
+		}
+		vector<string> filteredWords;
+		for (const auto& word : words) {
+			int l1 = checkBrackets(word, '(', ')');
+			int l2 = checkBrackets(word, '[', ']');
+			int l3 = checkBrackets(word, '{', '}');
+			if (((l1 >= 0) and (l2 >= 0) and (l3 >= 0)) and 
+				not ((l1 == 0) and (l2 == 0) and (l3 == 0)))
+				filteredWords.push_back(word);
+		}
+		printf("filteredWords: ");
+		for (const auto& word : filteredWords) {
+			printf("%s ", word.c_str());
+		}
+		//	shortestWord.c_str(), shortestWord.length());
+		//printf("Samoe korotkoe slovo: \"%s\" (dlina: %lu simvolov)\n",
+		//	longestWord.c_str(), longestWord.length());
 	}
 	// Вариант 18: Разработать метод, который выделяет слова, 
 	// в которых встречается введенная с клавиатуры подстрока 
