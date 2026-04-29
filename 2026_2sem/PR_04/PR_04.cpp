@@ -12,6 +12,7 @@
 struct Student* genDataStud() {
 	// Генерация данных студента - стандартные значения
 	struct Student* st = new Student();
+	(*st).number = "0086";
 	st->number = "0086"; // номер студ. билета
 	st->first_name = "Русаков Алексей";	// фамилия студента
 	st->birth_day = "27/12/1984";	// дата рождения студента
